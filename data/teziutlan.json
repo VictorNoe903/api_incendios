@@ -1,0 +1,74 @@
+[
+  {
+    "año":2016,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Fogatas",
+    "superficie_ha":null,
+    "lon":-97.3533131969,
+    "lat":19.8812633436
+  },
+  {
+    "año":2019,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Actividades Pecuarias",
+    "superficie_ha":null,
+    "lon":-97.3745786954,
+    "lat":19.8639081733
+  },
+  {
+    "año":2019,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Actividades Pecuarias",
+    "superficie_ha":null,
+    "lon":-97.3832623047,
+    "lat":19.890666691
+  },
+  {
+    "año":2022,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Actividades agricolas",
+    "superficie_ha":null,
+    "lon":-97.3376652232,
+    "lat":19.867416745
+  },
+  {
+    "año":2022,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Actividades ilicitas",
+    "superficie_ha":null,
+    "lon":-97.3775444125,
+    "lat":19.7819279873
+  },
+  {
+    "año":2022,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Actividades agricolas",
+    "superficie_ha":null,
+    "lon":-97.3393213402,
+    "lat":19.8644484814
+  },
+  {
+    "año":2021,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Desconocidas",
+    "superficie_ha":null,
+    "lon":-97.3752656084,
+    "lat":19.8552940718
+  },
+  {
+    "año":2021,
+    "entidad":"Puebla",
+    "municipio":"Teziutlan",
+    "causa":"Otras actividades productivas",
+    "superficie_ha":null,
+    "lon":-97.3742413395,
+    "lat":19.8643326019
+  }
+]
