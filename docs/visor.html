@@ -10,34 +10,100 @@
       font-family: monospace;
       user-select: none;
       overflow: hidden;
+      margin: 0;
+      padding: 20px;
     }
+
+    #json {
+      white-space: pre-wrap;
+      background: #0e0e0e;
+      border: 1px solid #00ff8855;
+      box-shadow: 0 0 15px #00ff8833;
+      border-radius: 10px;
+      padding: 20px;
+      height: 90vh;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+
     #bloqueo {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95);
+      background: rgba(0,0,0,0.92);
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
       color: white; font-size: 1.5rem;
       z-index: 9999;
+      backdrop-filter: blur(5px);
+    }
+
+    .parpadeo {
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.4; }
     }
   </style>
-  <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener('keydown', e => {
-      if ((e.ctrlKey && e.key === 's') || (e.key === 'PrintScreen')) e.preventDefault();
-    });
-    async function mostrarDemo(tipo){
-      const visor = document.getElementById("json");
-      visor.textContent = "Cargando...";
-      const resp = await fetch(`/data/${tipo}.json`);
-      const datos = await resp.json();
-      visor.textContent = JSON.stringify(datos.slice(0,5), null, 2);
-    }
-  </script>
 </head>
+
 <body>
-  <pre id="json">Acceso restringido. Solo vista controlada.</pre>
-  <div id="bloqueo">🔒 Acceso directo bloqueado. Use la API oficial.</div>
+  <pre id="json">🔒 Cargando vista protegida...</pre>
+  <div id="bloqueo" class="parpadeo">🔒 Acceso directo bloqueado. Use la API oficial.</div>
+
+  <script>
+    // Bloqueos de interacción
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        (e.ctrlKey && ['s','u','c','a','p'].includes(e.key.toLowerCase())) ||
+        e.key === 'PrintScreen' ||
+        e.key === 'F12'
+      ) e.preventDefault();
+    });
+
+    let datos = [];
+    let indice = 0;
+    let intervalo;
+
+    // Detectar tipo desde el query ?view=
+    function obtenerTipo() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('view') || 'teziutlan';
+    }
+
+    async function cargarDatos() {
+      const visor = document.getElementById('json');
+      visor.textContent = "📡 Conectando con el dataset...";
+      try {
+        const tipo = obtenerTipo();
+        const resp = await fetch(`/data/${tipo}.json`);
+        if (!resp.ok) throw new Error("Error al cargar JSON");
+        datos = await resp.json();
+        visor.textContent = `✅ Dataset '${tipo}' cargado (${datos.length} registros)\n\nPreparando visualización...`;
+        indice = 0;
+        iniciarCiclo();
+      } catch (err) {
+        visor.textContent = "⚠️ Error: No se pudieron cargar los datos.";
+      }
+    }
+
+    function iniciarCiclo() {
+      clearInterval(intervalo);
+      const visor = document.getElementById('json');
+      const tipo = obtenerTipo().toUpperCase();
+
+      intervalo = setInterval(() => {
+        if (!datos.length) return;
+        const subset = datos.slice(indice, indice + 10);
+        const texto = JSON.stringify(subset, null, 2);
+        visor.textContent = `🔹 Dataset: ${tipo}\n🔹 Mostrando registros ${indice + 1} - ${indice + subset.length} de ${datos.length}\n\n${texto}`;
+        indice = (indice + 10) % datos.length;
+      }, 2000);
+    }
+
+    window.onload = cargarDatos;
+  </script>
 </body>
 </html>
