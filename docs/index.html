@@ -1,4 +1,190 @@
-<!-- ====================================================== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔥 API de Incendios Forestales</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #f2f2f2;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    header {
+      background: linear-gradient(90deg, #ff3c3c, #a30000);
+      padding: 60px 0;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 25px #ff3c3c66;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #fff8f8;
+    }
+
+    h2, h3 {
+      color: #ff3c3c;
+      text-align: center;
+    }
+
+    p {
+      color: #ddd;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid #ff3c3c55;
+      box-shadow: 0 0 20px #ff3c3c22;
+      border-radius: 1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 25px #ff3c3c88;
+    }
+
+    .btn-danger {
+      background: #ff3c3c;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .btn-danger:hover {
+      background: #ff5656;
+    }
+
+    .card h5 {
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px #ff3c3c55;
+    }
+
+    .card p {
+      color: #f2f2f2;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .doc-section {
+      background: #141414;
+      border: 1px solid #ff3c3c33;
+      border-radius: 1rem;
+      padding: 40px;
+      margin-top: 60px;
+      box-shadow: 0 0 20px #ff3c3c11;
+    }
+
+    .doc-section h3 {
+      color: #ff3c3c;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    code {
+      background: #222;
+      color: #00ff88;
+      padding: 4px 7px;
+      border-radius: 5px;
+    }
+
+    pre {
+      background: #0f0f0f;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 15px;
+      color: #00ff88;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    pre.demo {
+      height: 300px;
+      white-space: pre-wrap;
+      box-shadow: 0 0 15px #00ff8844;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 70px;
+      padding: 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+      border-top: 1px solid #222;
+    }
+
+    .loading {
+      color: #ff3c3c;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🔥 API de Incendios Forestales</h1>
+    <p>Datos oficiales para análisis predictivo y prevención de incendios forestales</p>
+  </header>
+
+  <div class="container my-5">
+
+    <section id="proyecto" class="text-center mb-5">
+      <h2><i class="bi bi-compass"></i> Enfoque del Proyecto</h2>
+     <p class="col-md-10 mx-auto mt-3">
+  Esta API forma parte del <strong>Modelo Predictivo de Incendios Forestales</strong>, una iniciativa de carácter científico-tecnológico, orientada al monitoreo, análisis y prevención de incendios en la región de 
+  <strong>Teziutlán, Puebla</strong>, con escalabilidad para su aplicación a otros sistemas e integraciones en diferentes zonas.
+  <br><br>
+  El proyecto integra fuentes de datos ambientales, geoespaciales y meteorológicas para generar información histórica y predictiva, 
+  fomentando la toma de decisiones informadas, la protección de los ecosistemas y la seguridad de la población.
+  <br><br>
+  Se trata de un desarrollo en constante actualización y mejora continua, respaldado por un <strong>repositorio oficial</strong> 
+  que documenta versiones, avances y contribuciones abiertas para el fortalecimiento de la investigación aplicada 
+  en sistemas de predicción de riesgos forestales.
+  <br>
+  <br>
+  Este trabajo tiene como propósito contribuir al desarrollo de herramientas tecnológicas de libre acceso 
+  que apoyen el <strong>salvaguardo ambiental, la gestión preventiva de incendios forestales y la resiliencia social</strong>, 
+  promoviendo la cooperación entre instituciones, investigadores y comunidades locales en pro del bienestar regional y nacional.
+</p>
+<br>
+  <strong>Autor:</strong> Ing. Víctor Noé Martín Sierra  
+  <strong>Contacto:</strong> 233 101 9527 · 
+  <strong>Correo:</strong> <a href="mailto:v33119521n@gmail.com" class="text-decoration-none text-danger">v33119521n@gmail.com</a>  
+
+    </section>
+
+    <div class="row justify-content-center g-4 mb-5">
+      <div class="col-md-5">
+        <div class="card text-center p-4">
+          <h5>🌄 Teziutlán</h5>
+          <p>Datos regionales específicos de la zona de Teziutlán (Puebla).</p>
+          <a href="/docs/visor.html?view=teziutlan" class="btn btn-danger mt-2">Ver JSON</a>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card text-center p-4">
+          <h5>🇲🇽 Nacional</h5>
+          <p>Datos consolidados de incendios forestales a nivel nacional.</p>
+          <a href="/docs/visor.html?view=nacional" class="btn btn-danger mt-2">Ver JSON</a>
+        </div>
+      </div>
+    </div>
+
+   <!-- ====================================================== -->
 <!-- 📘 DOCUMENTACIÓN COMPLETA DE LA API NACIONAL DE INCENDIOS -->
 <!-- ====================================================== -->
 
@@ -190,3 +376,76 @@ def estadisticas():
     API en constante mejora con nuevas funcionalidades analíticas, filtros avanzados y estadísticas regionales.
   </p>
 </div>
+
+
+    <!-- DEMO INTERACTIVO -->
+    <div class="text-center mb-4 mt-5">
+      <h3><i class="bi bi-lightbulb"></i> Demostración Interactiva</h3>
+      <p class="text-secondary">Visualización dinámica recorriendo el dataset de Teziutlán.</p>
+    </div>
+
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-7">
+        <pre id="json-demo" class="demo">Inicializando demostración...</pre>
+      </div>
+      <div class="col-md-3 text-center mt-3 mt-md-0">
+        <button id="refreshBtn" class="btn btn-outline-light px-4 py-2">
+          <i class="bi bi-arrow-repeat"></i> Actualizar Demo
+        </button>
+        <p id="status" class="loading mt-3"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 Sistema Predictivo de Incendios .<strong>DERECHOS DE AUTOR</strong>
+  </footer>
+
+  <script>
+    let data = [];
+    let index = 0;
+    let interval;
+
+    async function cargarDemo() {
+      const demo = document.getElementById("json-demo");
+      const status = document.getElementById("status");
+      demo.textContent = "Cargando datos...";
+      status.textContent = "⏳ Conectando con dataset de Teziutlán...";
+
+      clearInterval(interval);
+
+      try {
+        const resp = await fetch("https://api.helenashop.com.mx/data/teziutlan.json");
+        if (!resp.ok) throw new Error("Error al obtener el JSON.");
+        data = await resp.json();
+
+        status.textContent = "✅ Datos cargados correctamente. Reproduciendo demo...";
+        index = 0;
+        reproducirDemo();
+
+      } catch (err) {
+        demo.textContent = "⚠️ No se pudo cargar el demo.";
+        status.textContent = "Error al cargar datos.";
+      }
+    }
+
+    function reproducirDemo() {
+      const demo = document.getElementById("json-demo");
+      clearInterval(interval);
+
+      interval = setInterval(() => {
+        if (!data.length) return;
+        const registro = data[index];
+        const texto = JSON.stringify(registro, null, 2);
+        demo.textContent = texto;
+        index = (index + 1) % data.length;
+      }, 2000);
+    }
+
+    document.getElementById("refreshBtn").addEventListener("click", cargarDemo);
+    window.onload = cargarDemo;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
