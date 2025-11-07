@@ -1,38 +1,192 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>🔥 API Nacional de Incendios Forestales</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>🔥 API Nacional de Incendios Forestales</h1>
-    <p>Datos oficiales históricos · División regional: Teziutlán / Nacional</p>
-  </header>
+<!-- ====================================================== -->
+<!-- 📘 DOCUMENTACIÓN COMPLETA DE LA API NACIONAL DE INCENDIOS -->
+<!-- ====================================================== -->
 
-  <main>
-    <section class="card">
-      <h2>🌄 Teziutlán</h2>
-      <p>Datos regionales específicos de la zona de Teziutlán.</p>
-      <a href="/data/teziutlan" target="_blank">Ver JSON</a>
-    </section>
+<div class="doc-section">
+  <h3><i class="bi bi-book"></i> Documentación Técnica y Uso de la API</h3>
 
-    <section class="card">
-      <h2>🇲🇽 Nacional</h2>
-      <p>Datos consolidados a nivel República Mexicana.</p>
-      <a href="/data/nacional" target="_blank">Ver JSON</a>
-    </section>
+  <p>
+    La <b>API Nacional de Incendios Forestales</b> es una plataforma abierta desarrollada con <b>FastAPI (Python)</b> 
+    y diseñada para facilitar la consulta, integración y análisis de información georreferenciada sobre incendios forestales
+    en México, con datos históricos desde <strong>2010</strong> hasta la actualidad.
+  </p>
 
-    <section class="card">
-      <h2>📘 Documentación</h2>
-      <p>Explora los endpoints técnicos interactivos.</p>
-      <a href="/docs" target="_blank">Abrir Swagger UI</a>
-    </section>
-  </main>
+  <p>
+    El sistema forma parte del <b>Modelo Predictivo de Incendios Forestales</b>, una iniciativa de investigación aplicada 
+    desarrollada por el <b>Ing. Víctor Noé Martín Sierra</b> (Teziutlán, Puebla, México), orientada a la prevención, análisis de riesgo 
+    y toma de decisiones ambientales mediante técnicas de minería de datos y modelado predictivo.
+  </p>
 
-  <footer>
-    <p>© 2025 Sistema Predictivo de Incendios · Desarrollado por Ing. Víctor Noé</p>
-  </footer>
-</body>
-</html>
+  <p>
+    Esta API está implementada sobre un servidor <b>FastAPI</b> en un entorno Linux (Ubuntu 24.04 LTS) alojado en Hostinger VPS,
+    con despliegue mediante <code>Gunicorn</code> + <code>Nginx</code> y certificado SSL <b>Let’s Encrypt</b> para comunicación segura (<code>HTTPS</code>).
+  </p>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Estructura de los Datos</h4>
+  <pre>[
+  {
+    "año": 2023,
+    "entidad": "Puebla",
+    "municipio": "Teziutlán",
+    "causa": "Quema agrícola",
+    "superficie_ha": 14.8,
+    "lon": -97.3723,
+    "lat": 19.8145
+  }
+]</pre>
+  <p>
+    Cada registro representa un evento de incendio forestal georreferenciado, incluyendo su año, ubicación (entidad/municipio),
+    causa identificada y superficie afectada.  
+    Las coordenadas (<code>lat</code>, <code>lon</code>) están expresadas en formato decimal compatible con el sistema geodésico WGS84 (EPSG:4326).
+  </p>
+
+  <h4 class="mt-4 text-danger">🔹 Endpoints Principales</h4>
+  <ul>
+    <li><code>/data/teziutlan.json</code> — Dataset regional de Teziutlán, Puebla.</li>
+    <li><code>/data/nacional.json</code> — Dataset consolidado de todo México.</li>
+    <li><code>/api/teziutlan</code> — Endpoint dinámico (JSON filtrable) implementado en FastAPI.</li>
+    <li><code>/api/nacional</code> — Endpoint dinámico nacional con parámetros de búsqueda.</li>
+  </ul>
+
+  <p>
+    Todos los endpoints devuelven datos en formato <code>application/json</code> y están optimizados para consumo
+    desde aplicaciones web, móviles, plataformas de análisis (como Power BI, Tableau, Google Colab, RStudio)
+    o sistemas científicos basados en Python y R.
+  </p>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Parámetros de Consulta Dinámica (FastAPI)</h4>
+  <p>
+    Los endpoints <code>/api/teziutlan</code> y <code>/api/nacional</code> permiten aplicar filtros dinámicos mediante parámetros GET:
+  </p>
+
+  <pre><code># Ejemplos de consultas válidas:
+https://api.helenashop.com.mx/api/nacional?entidad=Puebla
+https://api.helenashop.com.mx/api/nacional?causa=Intencional
+https://api.helenashop.com.mx/api/teziutlan?año=2023
+https://api.helenashop.com.mx/api/nacional?entidad=Veracruz&año=2022
+</code></pre>
+
+  <p>
+    Ejemplo de implementación interna (Python / FastAPI):
+  </p>
+
+  <pre><code>from fastapi import FastAPI, Query
+import json
+
+app = FastAPI(title="API Nacional de Incendios Forestales")
+
+with open("data/nacional.json", encoding="utf-8") as f:
+    DATA_NACIONAL = json.load(f)
+
+@app.get("/api/nacional")
+def get_nacional(entidad: str | None = None, causa: str | None = None, año: int | None = None):
+    data = DATA_NACIONAL
+    if entidad:
+        data = [d for d in data if d["entidad"].lower() == entidad.lower()]
+    if causa:
+        data = [d for d in data if d["causa"].lower() == causa.lower()]
+    if año:
+        data = [d for d in data if int(d["año"]) == año]
+    return {"total": len(data), "resultados": data[:50]}  # Límite de 50 resultados
+</code></pre>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Ejemplos de Uso por Lenguaje</h4>
+
+  <h5>🧠 Python (Análisis en Google Colab / Jupyter)</h5>
+  <pre><code>import requests, pandas as pd
+
+url = "https://api.helenashop.com.mx/api/nacional?entidad=Puebla&año=2023"
+data = requests.get(url).json()
+
+df = pd.DataFrame(data["resultados"])
+print("Total:", data["total"])
+df.head()</code></pre>
+
+  <h5>💻 JavaScript (Frontend / Navegador)</h5>
+  <pre><code>async function cargarIncendios() {
+  const res = await fetch("https://api.helenashop.com.mx/api/nacional?causa=Intencional");
+  const data = await res.json();
+  console.log("Casos intencionales:", data.total);
+}
+cargarIncendios();</code></pre>
+
+  <h5>⚙️ PHP (Backend / Servidor Web)</h5>
+  <pre><code>&lt;?php
+$url = "https://api.helenashop.com.mx/api/nacional?entidad=Chiapas";
+$json = file_get_contents($url);
+$data = json_decode($json, true);
+echo "Incendios en Chiapas: " . $data["total"];
+?&gt;</code></pre>
+
+  <h5>📊 R (Análisis Científico)</h5>
+  <pre><code>library(jsonlite)
+library(ggplot2)
+
+url <- "https://api.helenashop.com.mx/api/teziutlan?año=2023"
+data <- fromJSON(url)$resultados
+
+ggplot(data, aes(x = causa)) +
+  geom_bar(fill = "darkred") +
+  theme_minimal() +
+  labs(title = "Frecuencia de causas de incendios en Teziutlán (2023)",
+       x = "Causa", y = "Frecuencia")</code></pre>
+
+  <h5>🧩 cURL (Terminal Linux / macOS)</h5>
+  <pre><code>curl -X GET "https://api.helenashop.com.mx/api/nacional?entidad=Puebla" \
+-H "Accept: application/json" \
+-o incendios_puebla.json</code></pre>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Integraciones Avanzadas con FastAPI + Pandas</h4>
+  <pre><code>from fastapi import FastAPI
+import pandas as pd
+
+app = FastAPI()
+
+@app.get("/api/estadisticas")
+def estadisticas():
+    df = pd.read_json("https://api.helenashop.com.mx/data/nacional.json")
+    resumen = (
+        df.groupby("entidad")["superficie_ha"]
+          .sum()
+          .sort_values(ascending=False)
+          .head(10)
+    )
+    return {"Top 10 entidades por superficie afectada": resumen.to_dict()}
+</code></pre>
+
+  <p>
+    Esta ruta genera un resumen estadístico dinámico de los 10 estados con mayor superficie afectada por incendios,
+    pudiendo integrarse fácilmente con dashboards o servicios analíticos.
+  </p>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Integración con Plataformas GIS (QGIS / ArcGIS)</h4>
+  <p>
+    Los datasets pueden importarse directamente en <b>QGIS</b> o <b>ArcGIS</b> como <b>GeoJSON</b> mediante la URL de los endpoints.
+    Esto permite superponer capas de incendios sobre mapas base, realizar análisis espaciales, y generar mapas de calor
+    o series temporales geográficas.
+  </p>
+
+  <hr>
+
+  <h4 class="mt-4 text-danger">🔹 Buenas Prácticas y Licencia</h4>
+  <ul>
+    <li>Uso con fines académicos, ambientales y de investigación.</li>
+    <li>No se recomienda realizar peticiones masivas sin intervalos.</li>
+    <li>En publicaciones o reportes cite: <b>API Nacional de Incendios Forestales (Ing. Víctor Noé Martín Sierra, 2025)</b>.</li>
+  </ul>
+
+  <p class="mt-4">
+    <i class="bi bi-calendar3"></i> <b>Última actualización:</b> Noviembre 2025 —  
+    API en constante mejora con nuevas funcionalidades analíticas, filtros avanzados y estadísticas regionales.
+  </p>
+</div>
